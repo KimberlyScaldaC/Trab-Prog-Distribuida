@@ -9,99 +9,85 @@ package Familia;
  * @author Kimberly Scaldaferro Colodeti
  */
 public class Acao extends Thread {
-    
-    private Conta conta = null;
-    private int valorSaque = 0;
-    private int tempo = 0;
-    private String nomeThread;
-    private int totalGastadora = 0;
-    private int totalEsperta = 0;
-    private int totalEconomica = 0;
 
-    public Acao(String nomeThread,int tempo, int valorSaque , Conta conta){
-        super(nomeThread);
-        this.nomeThread = nomeThread;
-        this.tempo = tempo;
-        this.valorSaque = valorSaque;
-        this.conta = conta;
-    }
+  private Conta conta = null;
+  private int valorSaque;
+  private int tempo;
 
-    public String getNomeThread(){
-        return nomeThread;
-    }
-    
-    public int getValorSaque(){
-        return valorSaque;
-    }
-  
-    public void run(){
-        int total = 0;
-//    while(conta.saque(conta,valorSaque)){;
-//      total += valorSaque;
-//    }
-    // Enquanto houver saldo suficiente
-    while (true) {
-        
-        
-        if(conta.getSaldo() == 0){
-            System.out.println(" ");
-            System.out.println(" --------------");
-            System.out.println("Entrou 10 -> "+totalGastadora);
-            System.out.println("Entrou 50 -> "+totalEsperta);
-            System.out.println("Entrou 5 -> "+totalEconomica);
-            System.out.println(" ");
-            System.out.println(" ");
-            System.out.println("---------- Resultado ----------");
-            System.out.println(" ");
-            System.out.println("Thread: AGastadora - Sacou Total R$ " + totalGastadora + ",00");
-            System.out.println("Thread: AEsperta   - Sacou Total R$ " + totalEsperta+ ",00");
-            System.out.println("Thread: AEconomica - Sacou Total R$ " + totalEconomica + ",00");
-            System.out.println(" ");
-            System.exit(0);
-        }
-        
-        
+  // private int totalGastadora = 0;
+  // private int totalEsperta = 0;
+  // private int totalEconomica = 0;
 
-        try {
-          // Espera tempo milissegundos
-          Thread.sleep(tempo);
-
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        
-        if(conta.getSaldo() >= valorSaque){
-            if(valorSaque == 10){
-                System.out.println("Entrou 10");
-                totalGastadora = valorSaque + totalGastadora;
-                System.out.println("Entrou 10 -> "+totalGastadora);
-            }
-            if(valorSaque == 50){
-                System.out.println("Entrou 50");
-                totalEsperta = valorSaque + totalEsperta;
-                System.out.println("Entrou 50 -> "+totalEsperta);
-            }
-            if(valorSaque == 5){
-                System.out.println("Entrou 5");
-                totalEconomica = valorSaque + totalEconomica;
-                System.out.println("Entrou 5 -> "+totalEconomica);
-            }
-        }else{
-            System.out.println(" ");
-            System.out.println(" ----- ELSE ---------");
-            System.out.println("Entrou 10 -> "+totalGastadora);
-            System.out.println("Entrou 50 -> "+totalEsperta);
-            System.out.println("Entrou 5 -> "+totalEconomica);
-            System.out.println(" ");
-        }
-        
-        // Verifica se pode sacar
-        conta.saque(conta, valorSaque, nomeThread);
-            
-        
-        
-        //System.out.println(NomeThread+" - sacou R$" + valorSaque + " - Soma total sacado R$"+total);
-            
-    }  
+  public Acao(String nomeThread, int tempo, int valorSaque, Conta conta) {
+    super(nomeThread);
+    this.tempo = tempo;
+    this.valorSaque = valorSaque;
+    this.conta = conta;
   }
+
+  // public int getTotalGastadora() {
+  // return totalGastadora;
+  // }
+
+  // public int getTotalEsperta() {
+  // return totalEsperta;
+  // }
+
+  // public int getTotalEconomica() {
+  // return totalEconomica;
+  // }
+
+  public void imprimirResumo() {
+
+    System.out.println("\n\n---------- RESUMO FINAL ----------");
+    System.out.println("AGastadora sacou um total de R$ " + conta.getTotalGastadora() + ",00");
+    System.out.println("AEsperta sacou um total de R$ " + conta.getTotalEsperta() + ",00");
+    System.out.println("AEconomica sacou um total de R$ " + conta.getTotalEconomica() + ",00");
+    System.out.println("\n----------------------------------");
+    System.exit(0);
+  }
+
+  public void run() {
+    int total = 0;
+    while (true) {
+
+      if (conta.getSaldo() == 0) {
+        imprimirResumo();
+
+      }
+
+      try {
+        // Espera tempo milissegundos
+        Thread.sleep(tempo);
+
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      if (conta.getSaldo() >= valorSaque) {
+        if (getName() == "AGastadora") {
+          total = valorSaque + conta.getTotalGastadora();
+          conta.setTotalGastadora(total);
+          System.out.println(" ENTROU 10 -> " + conta.getTotalGastadora());
+        }
+        if (getName() == "AEsperta") {
+          total = valorSaque + conta.getTotalEsperta();
+          conta.setTotalEsperta(total);
+          System.out.println(" ENTROU 10 -> " + conta.getTotalEsperta());
+        }
+        if (getName() == "AEconomica") {
+          total = valorSaque + conta.getTotalEconomica();
+          conta.setTotalEconomica(total);
+          System.out.println(" ENTROU 10 -> " + conta.getTotalEconomica());
+        }
+      }
+
+      
+      conta.saque(valorSaque, getName());
+
+
+    }
+
+  }
+
 }
