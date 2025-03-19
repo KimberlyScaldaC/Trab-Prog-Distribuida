@@ -17,9 +17,11 @@ public class Conta {
     private int totalGastadora = 0;
     private int totalEsperta = 0;
     private int totalEconomica = 0;
+    private int totalPatrocinadora = 0;
     private int quantGastadora = 0;
     private int quantEsperta = 0;
     private int quantEconomica = 0;
+    private int quantPatrocinadora = 0;
 
     public Conta(int saldo) {
         this.saldo = saldo;
@@ -51,6 +53,12 @@ public class Conta {
 
     }
 
+    public synchronized void Deposito(int valorDeposito, String nomeThread) {
+        saldo += valorDeposito;
+        System.out.println("Thread: " + nomeThread + " - depositou R$ " + valorDeposito
+                + ",00 - Saldo apos deposito: R$ " + saldo + ",00");
+    }
+
     public synchronized int getSaldo() {
         return saldo;
     }
@@ -66,6 +74,19 @@ public class Conta {
     public int setTotalGastadora(int totalGastadora) {
         this.quantGastadora += 1;
         return this.totalGastadora = totalGastadora;
+    }
+
+    public int getTotalPatrocinadora() {
+        return totalPatrocinadora;
+    }
+
+    public int getQuantPatrocinadora() {
+        return quantPatrocinadora;
+    }
+
+    public int setTotalPatrocinadora(int totalPatrocinadora) {
+        this.quantPatrocinadora += 1;
+        return this.totalPatrocinadora = totalPatrocinadora;
     }
 
     public int getTotalEsperta() {
