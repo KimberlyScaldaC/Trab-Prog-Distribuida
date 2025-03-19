@@ -22,10 +22,13 @@ public class Familia {
       Acao AGastadora = new Acao("AGastadora ",3000, 10, conta);//10
       Acao AEsperta = new Acao("AEsperta ",6000, 50, conta);//50
       Acao AEconomica = new Acao("AEconomica ",12000, 5, conta);//5
-      
-      //INICIA AS THREADS
+      Acao APatrocinadora = new Acao("APatrocinadora", 0, 100, conta);
+        
+      // INICIA AS THREADS
       AGastadora.start();
       AEsperta.start();
       AEconomica.start();
+      APatrocinadora.start();
+      
   }
 }
