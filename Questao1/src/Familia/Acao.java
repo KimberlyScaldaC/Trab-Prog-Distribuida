@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Familia;
+//package Familia;
 
 /**
  *
@@ -40,9 +40,12 @@ public class Acao extends Thread {
   public void imprimirResumo() {
 
     System.out.println("\n\n---------- RESUMO FINAL ----------");
-    System.out.println("AGastadora sacou um total de R$ " + conta.getTotalGastadora() + ",00");
-    System.out.println("AEsperta sacou um total de R$ " + conta.getTotalEsperta() + ",00");
-    System.out.println("AEconomica sacou um total de R$ " + conta.getTotalEconomica() + ",00");
+    System.out.println("\nAGastadora -> sacou um total de R$ " + conta.getTotalGastadora() + ",00");
+    System.out.println("           -> Quantidade de Saques: " + conta.getQuantGastadora());
+    System.out.println("\nAEsperta  -> sacou um total de R$ " + conta.getTotalEsperta() + ",00");
+    System.out.println("           -> Quantidade de Saques: " + conta.getQuantEsperta());
+    System.out.println("\nAEconomica -> sacou um total de R$ " + conta.getTotalEconomica() + ",00");
+    System.out.println("           -> Quantidade de Saques: " + conta.getQuantEconomica());
     System.out.println("\n----------------------------------");
     System.exit(0);
   }
@@ -68,23 +71,21 @@ public class Acao extends Thread {
         if (getName() == "AGastadora") {
           total = valorSaque + conta.getTotalGastadora();
           conta.setTotalGastadora(total);
-          System.out.println(" ENTROU 10 -> " + conta.getTotalGastadora());
+          // System.out.println(" ENTROU 10 -> " + conta.getTotalGastadora());
         }
         if (getName() == "AEsperta") {
           total = valorSaque + conta.getTotalEsperta();
           conta.setTotalEsperta(total);
-          System.out.println(" ENTROU 10 -> " + conta.getTotalEsperta());
+          // System.out.println(" ENTROU 10 -> " + conta.getTotalEsperta());
         }
         if (getName() == "AEconomica") {
           total = valorSaque + conta.getTotalEconomica();
           conta.setTotalEconomica(total);
-          System.out.println(" ENTROU 10 -> " + conta.getTotalEconomica());
+          // System.out.println(" ENTROU 10 -> " + conta.getTotalEconomica());
         }
       }
 
-      
       conta.saque(valorSaque, getName());
-
 
     }
 
