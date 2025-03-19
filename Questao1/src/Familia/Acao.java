@@ -14,9 +14,9 @@ public class Acao extends Thread {
     private int valorSaque = 0;
     private int tempo = 0;
     private String nomeThread;
-    private int totalGastadora;
-    private int totalEsperta;
-    private int totalEconomica;
+    private int totalGastadora = 0;
+    private int totalEsperta = 0;
+    private int totalEconomica = 0;
 
     public Acao(String nomeThread,int tempo, int valorSaque , Conta conta){
         super(nomeThread);
@@ -45,6 +45,11 @@ public class Acao extends Thread {
         
         if(conta.getSaldo() == 0){
             System.out.println(" ");
+            System.out.println(" --------------");
+            System.out.println("Entrou 10 -> "+totalGastadora);
+            System.out.println("Entrou 50 -> "+totalEsperta);
+            System.out.println("Entrou 5 -> "+totalEconomica);
+            System.out.println(" ");
             System.out.println(" ");
             System.out.println("---------- Resultado ----------");
             System.out.println(" ");
@@ -54,6 +59,8 @@ public class Acao extends Thread {
             System.out.println(" ");
             System.exit(0);
         }
+        
+        
 
         try {
           // Espera tempo milissegundos
@@ -63,11 +70,7 @@ public class Acao extends Thread {
           e.printStackTrace();
         }
         
-        // Verifica se pode sacar
-        conta.saque(conta, valorSaque, nomeThread);
-            
-        
-        if(true){
+        if(conta.getSaldo() >= valorSaque){
             if(valorSaque == 10){
                 System.out.println("Entrou 10");
                 totalGastadora = valorSaque + totalGastadora;
@@ -81,8 +84,22 @@ public class Acao extends Thread {
             if(valorSaque == 5){
                 System.out.println("Entrou 5");
                 totalEconomica = valorSaque + totalEconomica;
+                System.out.println("Entrou 5 -> "+totalEconomica);
             }
+        }else{
+            System.out.println(" ");
+            System.out.println(" ----- ELSE ---------");
+            System.out.println("Entrou 10 -> "+totalGastadora);
+            System.out.println("Entrou 50 -> "+totalEsperta);
+            System.out.println("Entrou 5 -> "+totalEconomica);
+            System.out.println(" ");
         }
+        
+        // Verifica se pode sacar
+        conta.saque(conta, valorSaque, nomeThread);
+            
+        
+        
         //System.out.println(NomeThread+" - sacou R$" + valorSaque + " - Soma total sacado R$"+total);
             
     }  
