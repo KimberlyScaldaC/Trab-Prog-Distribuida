@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Familia;
+//package Familia;
 
 /**
  *
@@ -17,6 +17,9 @@ public class Conta {
     private int totalGastadora = 0;
     private int totalEsperta = 0;
     private int totalEconomica = 0;
+    private int quantGastadora = 0;
+    private int quantEsperta = 0;
+    private int quantEconomica = 0;
 
     public Conta(int saldo) {
         this.saldo = saldo;
@@ -56,7 +59,12 @@ public class Conta {
         return totalGastadora;
     }
 
+    public int getQuantGastadora() {
+        return quantGastadora;
+    }
+
     public int setTotalGastadora(int totalGastadora) {
+        this.quantGastadora += 1;
         return this.totalGastadora = totalGastadora;
     }
 
@@ -64,7 +72,12 @@ public class Conta {
         return totalEsperta;
     }
 
+    public int getQuantEsperta() {
+        return quantEsperta;
+    }
+
     public int setTotalEsperta(int totalEsperta) {
+        this.quantEsperta += 1;
         return this.totalEsperta = totalEsperta;
     }
 
@@ -72,7 +85,12 @@ public class Conta {
         return totalEconomica;
     }
 
+    public int getQuantEconomica() {
+        return quantEconomica;
+    }
+
     public int setTotalEconomica(int totalEconomica) {
+        this.quantEconomica += 1;
         return this.totalEconomica = totalEconomica;
     }
 
