@@ -1,11 +1,12 @@
 ## Trabalho Programação Concorrente e Distribuída
 
-###Sumário
+### Sumário
 - [Questão 1](questao1)
 
 Esse repositório foi criado pelo grupo 8 para postar as soluções das questões de 1 a 6 em C#, GO e Java. Abaixo estão os enunciados
 
-### Questão 1 <a name="questao1"></a>
+<a name="questao1"></a>
+### Questão 1 
 
 A) Deve-se criar uma aplicação que modele o funcionamento de sua conta bancária. Esta conta será
 o recurso compartilhado e deverá ser acessada/modificada por três threads: a thread AEsperta, a
