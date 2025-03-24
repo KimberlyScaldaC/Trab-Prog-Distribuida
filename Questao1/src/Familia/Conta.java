@@ -70,7 +70,7 @@ public class Conta {
      */
     public synchronized void Deposito(int valorDeposito, String nomeThread) {
         saldo += valorDeposito; // Adiciona o valor do depósito ao saldo da conta
-        System.out.println("/nThread: " + nomeThread + " - depositou R$ " + valorDeposito
+        System.out.println("\nThread: " + nomeThread + " - depositou R$ " + valorDeposito
                 + ",00 - Saldo apos deposito: R$ " + saldo + ",00");
     }
 
