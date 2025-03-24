@@ -27,7 +27,8 @@ func limpaConsole() {
 
 // Essa é a nossa função main, que chama diretamente o menu.
 func main() {
-	arrArquivos := []string{"computacao.csv", "administração.csv", "arquitetura.csv", "biologia.csv", "direito.csv", "economia.csv", "engenharia.csv", "filosofia.csv"}
+	arrArquivos := []string{"administração.csv", "arquitetura.csv", "biologia.csv", "computacao.csv", "direito.csv", "economia.csv", "engenharia.csv", "filosofia.csv",
+				"física.csv", "história.csv", "letras.csv", "matemática.csv", "medicina.csv", "psicologia.csv", "química.csv"}
 	limpaConsole()
 
 	var wg sync.WaitGroup
