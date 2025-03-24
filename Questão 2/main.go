@@ -27,7 +27,7 @@ func limpaConsole() {
 
 // Essa é a nossa função main, que chama diretamente o menu.
 func main() {
-	arrArquivos := []string{"dados.csv"}
+	arrArquivos := []string{"computacao.csv", "administração.csv", "arquitetura.csv", "biologia.csv", "direito.csv", "economia.csv", "engenharia.csv", "filosofia.csv"}
 	limpaConsole()
 
 	var wg sync.WaitGroup
@@ -48,6 +48,7 @@ func main() {
 
 func buscaCompleto(nomeArquivo string, wg *sync.WaitGroup) {
 	defer wg.Done()
+
 	// Abre o arquivo CSV
 	file, err := os.Open(nomeArquivo)
 	if err != nil {
@@ -58,7 +59,13 @@ func buscaCompleto(nomeArquivo string, wg *sync.WaitGroup) {
 	// Cria um novo leitor CSV
 	reader := csv.NewReader(file)
 
-	// Lê todas as linhas do arquivo
+	// Lê a primeira linha para ignorar os cabeçalhos
+	_, err = reader.Read()
+	if err != nil {
+		log.Fatal("Erro ao ler os cabeçalhos do arquivo:", err)
+	}
+
+	// Lê todas as linhas restantes
 	records, err := reader.ReadAll()
 	if err != nil {
 		log.Fatal("Erro ao ler o arquivo:", err)
@@ -66,17 +73,16 @@ func buscaCompleto(nomeArquivo string, wg *sync.WaitGroup) {
 
 	// Processa cada linha do CSV
 	for _, record := range records {
-		// Cada 'record' é uma linha do CSV
 		if len(record) == 4 {
-			// Converte o valor 'Ativo' para booleano
+			// Converte o valor 'Cursando' para booleano
 			flag, err := strconv.ParseBool(record[3])
 			if err != nil {
-				log.Printf("Erro ao converter ativo para bool: %v\n", err)
+				log.Printf("Erro ao converter 'Cursando' para bool na linha %+v: %v\n", record, err)
 				continue
 			}
 
 			aluno := Aluno{
-				Matricula: record[0], // A matrícula continua como string
+				Matricula: record[0],
 				Nome:      record[1],
 				Curso:     record[2],
 				Flag:      flag,
@@ -84,13 +90,8 @@ func buscaCompleto(nomeArquivo string, wg *sync.WaitGroup) {
 
 			// Imprime as informações do aluno
 			if !aluno.Flag {
-				fmt.Printf("Matrícula: %s\n", aluno.Matricula)
-				fmt.Printf("Nome: %s\n", aluno.Nome)
-				fmt.Printf("Curso: %s\n", aluno.Curso)
-				fmt.Printf("Status: completo\n")
-				fmt.Println("----------------------")
+				fmt.Printf("%s %s %s COMPLETO\n", aluno.Matricula, aluno.Nome, aluno.Curso)
 			}
-
 		} else {
 			fmt.Println("Linha com formato inválido:", record)
 		}
