@@ -36,6 +36,7 @@ public class Acao extends Thread {
     System.out.println("\nAPatrocinadora -> sacou um total de R$ " + conta.getTotalPatrocinadora() + ",00");
     System.out.println("           -> Quantidade de Saques: " + conta.getQuantPatrocinadora());
     System.out.println("\n----------------------------------\n");
+    System.out.println("------------- Acoes na Conta -------------");");
   }
 
   /**
