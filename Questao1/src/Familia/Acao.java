@@ -1,9 +1,10 @@
 
-//package Familia;
+package Familia;
 
 /**
  *
- * @author Kimberly Scaldaferro Colodeti
+ * @author  Kimberly Scaldaferro Colodeti
+ * QUESTAO 1
  */
 public class Acao extends Thread {
 
