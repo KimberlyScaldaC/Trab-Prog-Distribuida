@@ -4,11 +4,20 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 	"sync"
 )
 
+// Esta é uma função feita para limpar o console, visando melhorar a visibilidade do output
+func limpaConsole() {
+	c := exec.Command("clear")
+	c.Stdout = os.Stdout
+	c.Run()
+}
+
 func main() {
+	limpaConsole()
 	// Em um array, colocamos os nomes de todos os arquivos que queremos usar
 	// futuramente seria inteligente encontrar uma forma de pegar esses nomes automaticamente, caso usemos uma base de dados maior
 	estados := []string{
@@ -125,11 +134,11 @@ func mediaTemperatura(arquivo string, wg *sync.WaitGroup, mediaGeral chan<- floa
 		case "centro-oeste.csv":
 			nomeRegiao = "Centro-Oeste"
 		}
-		
+
 		fmt.Printf("Média de temperatura do %s: %.2f°C\n", nomeRegiao, media)
-		mutex.Lock() // Trava a variável para ser manipulada sem concorrência
+		mutex.Lock()
 		mediaGeral <- media // Adiciona a média da região na variável que colocamos no canal
-		mutex.Unlock() // Destrava para outras GoRoutines usarem
+		mutex.Unlock()
 	} else {
 		fmt.Printf("Nenhum dado válido encontrado no arquivo '%s'.\n", arquivo)
 	}
