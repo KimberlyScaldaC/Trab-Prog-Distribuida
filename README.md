@@ -1,5 +1,19 @@
 ## Trabalho Programação Concorrente e Distribuída
 
+
+### Componentes do grupo  
+ 	
+- Henrique Kalil Coelho
+
+- João Gabriel Gomes de Carvalho 
+ 	
+- Kimberly Scaldaferro Colodeti 
+ 	
+- Lucas Leão Oliveira
+
+- Vitor Motta Supelete
+
+
 ### Sumário
 - [Introdução](#intro)
 - [Questão 1](#questao1)
