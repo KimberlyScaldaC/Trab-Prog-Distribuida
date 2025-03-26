@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-// Primeiro de tudo, construímos uma estrutura com todas as informações necessárias para cadastrar um contato.
+// Primeiro de tudo, construímos uma estrutura com todas as informações necessárias para cadastrar um contato
 type Aluno struct {
 	Matricula string
 	Nome      string
@@ -26,7 +26,7 @@ func limpaConsole() {
 	c.Run()
 }
 
-// Essa é a nossa função main, que chama diretamente o menu.
+// Essa é a nossa função main, que chama diretamente o menu
 func main() {
 	// Array com os nomes dos arquivos a serem chamados
 	arrArquivos := []string{"administração.csv", "arquitetura.csv", "biologia.csv", "computacao.csv", "direito.csv", "economia.csv", "engenharia.csv", "filosofia.csv",
