@@ -14,7 +14,7 @@ public class Familia {
     public static void main(String[] args) {
         
       //CRIA CONTA JUNTO DA Familia
-      final Conta conta = new Conta(75);
+      final Conta conta = new Conta(10000);
       
       
       //CRIA FAMILIARES E LHES INFORMA A CONTA CONJUNTA
