@@ -9,8 +9,9 @@ import (
 )
 
 func main() {
-	// Lista de arquivos CSV, um para cada região do Brasil (exemplo).
-	arquivos := []string{
+	// Em um array, colocamos os nomes de todos os arquivos que queremos usar
+	// futuramente seria inteligente encontrar uma forma de pegar esses nomes automaticamente, caso usemos uma base de dados maior
+	estados := []string{
 		"norte.csv",
 		"nordeste.csv",
 		"sul.csv",
@@ -18,37 +19,41 @@ func main() {
 		"centro-oeste.csv",
 	}
 
-	// WaitGroup para aguardar as goroutines.
+	// Instância de um objeto da classe WaitGroup, ferramenta importante para implementar sincronismo
 	var wg sync.WaitGroup
 
-	// Canal para armazenar as médias regionais.
-	resultados := make(chan float64, len(arquivos))
+	var mutex sync.Mutex
 
-	// Para cada arquivo, chama a função de cálculo em uma goroutine.
-	for _, arquivo := range arquivos {
-		wg.Add(1) // Incrementa o contador do WaitGroup.
-		go calcularMediaTemperatura(arquivo, &wg, resultados)
+	// Essa é uma variável que será usada por todas as outras GoRoutines, instanciamos ela como um "chan" ou Channel,
+	// que funciona de forma parecida aos ponteiros, mas com capacidade de interagir com ferramentas que previnekm concorrência
+	mediaGeral := make(chan float64, len(estados))
+
+	// Um loop para executar uma (1) GoRoutine para cada arquivo CSV
+	for _, arquivo := range estados {
+		wg.Add(1) // Adiciona +1 no contador do WaitGroup, para dizer quantas GoRoutines estão em execução
+		go mediaTemperatura(arquivo, &wg, mediaGeral, &mutex)
 	}
 
-	// Aguarda todas as goroutines terminarem.
+	// O código não irá continuar até que todas as GoRoutines sejam executadas, ou melhor, até o contador zerar
 	wg.Wait()
 
-	// Fecha o canal após todas as goroutines terminarem.
-	close(resultados)
+	// Quando terminar a execução das GoRoutines, o canal da variável será fechado
+	close(mediaGeral)
 
-	// Variáveis para calcular a média geral.
+	// Variáveis usadas para calcular a média geral de temperatura no país
 	var somaMedias float64
 	var numRegioes int
 
-	// Calcula a soma de todas as médias regionais.
-	for media := range resultados {
+	// Para cada valor em média, vai acrescentar em 1, isso é uma forma mais prática de dizer quantas regiões/arquivos lemos
+	// isso será útil para implementar esse código para países que tenham mais ou menos regiões que o Brasil
+	for media := range mediaGeral {
 		if media > 0 {
 			somaMedias += media
 			numRegioes++
 		}
 	}
 
-	// Calcula a média geral do país.
+	// Calcula a média do Brasil
 	if numRegioes > 0 {
 		mediaGeral := somaMedias / float64(numRegioes)
 		fmt.Printf("Média geral das temperaturas do Brasil: %.2f°C\n", mediaGeral)
@@ -57,11 +62,11 @@ func main() {
 	}
 }
 
-// Função que lê um arquivo CSV, calcula a média de temperatura e retorna o resultado.
-func calcularMediaTemperatura(arquivo string, wg *sync.WaitGroup, resultados chan<- float64) {
-	defer wg.Done() // Decrementa o contador do WaitGroup quando a função terminar.
+// Função para calcular a temperatura média de cada região
+func mediaTemperatura(arquivo string, wg *sync.WaitGroup, mediaGeral chan<- float64, mutex *sync.Mutex) {
+	defer wg.Done() // Diminui o contador em 1 quando a função terminar de executar
 
-	// Abre o arquivo CSV.
+	// Abre o arquivo e retorna se ocorrer algum erro de leitura (geralmente o erro está atrelado à escrita do nome lá no array da main)
 	file, err := os.Open(arquivo)
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
@@ -69,40 +74,42 @@ func calcularMediaTemperatura(arquivo string, wg *sync.WaitGroup, resultados cha
 	}
 	defer file.Close()
 
-	// Cria um leitor CSV.
+	// Cria um leitor para navegar no arquivo e ignorar a primeira linha, que é o cabeçalho
 	reader := csv.NewReader(file)
 
-	// Lê todas as linhas do arquivo CSV.
+	// Faz uma leitura completa de todas as linhas do arquivo e armazena elas em "linhas"
 	linhas, err := reader.ReadAll()
 	if err != nil {
 		fmt.Println("Erro ao ler o arquivo CSV:", err)
 		return
 	}
 
-	// Variáveis para calcular a soma das temperaturas e contar os estados.
+	// Cria as variáveis para calcular a média da temperatura da região baseada em cada estado
 	var somaTemperatura float64
 	var numEstados int
 
-	// Itera pelas linhas do arquivo CSV, ignorando o cabeçalho.
+	// Loop para navegar entre os elementos de linhas
 	for i, linha := range linhas {
 		if i == 0 {
-			// Ignora a primeira linha, que é o cabeçalho.
 			continue
 		}
 
-		// Obtém a temperatura da linha.
+		// Obtém a temperatura da linha, que está armazenada na segunda posição, ou índice 1
 		temperatura, err := strconv.ParseFloat(linha[1], 64)
 		if err != nil {
 			fmt.Println("Erro ao converter a temperatura:", err)
 			continue
 		}
 
-		// Adiciona a temperatura à soma.
+		// Adiciona a temperatura à soma das temperaturas e incrementa a contagem de estados
 		somaTemperatura += temperatura
 		numEstados++
 	}
 
-	// Calcula a média das temperaturas da região.
+	// Switch case apenas para embelezar a saída do código com o nome certinho de cada estado
+	// porém, ao implementar esse sistema para outros países, esse switch case terá que ser adaptado
+	// seria bom, futuramente, conseguir pegar o nome do arquivo e retirar só o ".csv", já ia embelezar muito
+	// usamos o numero de estados no if else para termos um parâmetro que a GoRoutine foi executada em conformidade
 	if numEstados > 0 {
 		media := somaTemperatura / float64(numEstados)
 		var nomeRegiao string
@@ -120,10 +127,10 @@ func calcularMediaTemperatura(arquivo string, wg *sync.WaitGroup, resultados cha
 		}
 		
 		fmt.Printf("Média de temperatura do %s: %.2f°C\n", nomeRegiao, media)
-		// Envia a média para o canal para ser usada na média geral.
-		resultados <- media
+		mutex.Lock() // Trava a variável para ser manipulada sem concorrência
+		mediaGeral <- media // Adiciona a média da região na variável que colocamos no canal
+		mutex.Unlock() // Destrava para outras GoRoutines usarem
 	} else {
 		fmt.Printf("Nenhum dado válido encontrado no arquivo '%s'.\n", arquivo)
-		resultados <- 0 // Envia 0 se não houver dados válidos.
 	}
 }
