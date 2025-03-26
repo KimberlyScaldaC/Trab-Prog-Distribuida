@@ -4,13 +4,9 @@
 ### Componentes do grupo  
  	
 - Henrique Kalil Coelho
-
 - João Gabriel Gomes de Carvalho 
- 	
 - Kimberly Scaldaferro Colodeti 
- 	
 - Lucas Leão Oliveira
-
 - Vitor Motta Supelete
 
 
