@@ -26,12 +26,12 @@ class Veiculo
         for (int rota = 1; rota <= 3; rota++)
         {
             Console.WriteLine($"Veículo {Id} iniciando Rota {rota}");
-            
+
             // O veículo entra no cruzamento na Rota específica
             cruzamento.Entrar(Id, $"Rota {rota}");
 
             // Simula o tempo que o veículo leva para atravessar o cruzamento (8800 ms)
-            Thread.Sleep(8800);
+            Thread.Sleep(9000);
 
             // O veículo sai do cruzamento após completar a rota
             cruzamento.Sair(Id, $"Rota {rota}");
@@ -121,7 +121,7 @@ class Simulacao
             thread.Start();
 
             // Intervalo entre a criação das threads (simula a chegada dos veículos ao cruzamento)
-            Thread.Sleep(5650);
+            Thread.Sleep(6000);
         }
 
         // Espera todas as threads terminarem antes de continuar
@@ -129,10 +129,10 @@ class Simulacao
         {
             thread.Join();
         }
-
-        // Exibe o relatório final após todos os veículos terminarem a simulação
         Console.WriteLine("\n=== Relatório de Tráfego ===");
         Console.WriteLine($"Total de veículos simulados: {totalVeiculos}");
-        Console.WriteLine($"Total de veículos processados: {veiculosProcessados}");
+        Console.WriteLine($"Total de rotas percorridas: 3");
+        Console.WriteLine($"tempo total de espera dos veículos: {totalVeiculos * 6000} ms");
+        Console.WriteLine($"tempo total de duração da simulação: {totalVeiculos * 6000 * 3} ms");
     }
 }
