@@ -129,6 +129,8 @@ class Simulacao
         {
             thread.Join();
         }
+
+        // Exibe um Relatorio de Tráfego informando dados como o numero total de veiculos simulados, de rotas percorridas, tempo de espera nos cruzamentos, e tempo total da simulação
         Console.WriteLine("\n=== Relatório de Tráfego ===");
         Console.WriteLine($"Total de veículos simulados: {totalVeiculos}");
         Console.WriteLine($"Total de rotas percorridas: 3");
